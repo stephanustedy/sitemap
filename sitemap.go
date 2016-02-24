@@ -19,7 +19,7 @@ const (
 	template = `
 	 <url>
 	   <loc>%s</loc>
-           <xhtml:link rel="alternate" media="only screen and (max-width: 640px)" href="%s" />
+       <xhtml:link rel="alternate" media="only screen and (max-width: 640px)" href="%s" />
 	   <lastmod>%s</lastmod>
 	   <changefreq>%s</changefreq>
 	   <priority>%.1f</priority>
@@ -40,6 +40,7 @@ const (
 
 type Item struct {
 	Loc        string
+	LocMobile  string
 	LastMod    time.Time
 	Changefreq string
 	Priority   float32
@@ -49,7 +50,7 @@ type Item struct {
 func (item *Item) String() string {
 	//2012-08-30T01:23:57+08:00
 	//Mon Jan 2 15:04:05 -0700 MST 2006
-	return fmt.Sprintf(template, item.Loc, item.LastMod.Format("2006-01-02T15:04:05+08:00"), item.Changefreq, item.Priority)
+	return fmt.Sprintf(template, item.Loc, item.LocMobile, item.LastMod.Format("2006-01-02T15:04:05+08:00"), item.Changefreq, item.Priority)
 }
 
 func SiteMap(f string, items []*Item) error {
