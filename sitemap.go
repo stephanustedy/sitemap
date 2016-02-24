@@ -19,10 +19,11 @@ const (
 	template = `
 	 <url>
 	   <loc>%s</loc>
+           <xhtml:link rel="alternate" media="only screen and (max-width: 640px)" href="%s" />
 	   <lastmod>%s</lastmod>
 	   <changefreq>%s</changefreq>
 	   <priority>%.1f</priority>
-	 </url> 	`
+	 </url>`
 
 	indexHeader = `<?xml version="1.0" encoding="UTF-8"?>
       <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`
