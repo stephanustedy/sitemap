@@ -57,7 +57,8 @@ func (item *Item) String() string {
 func SiteMap(f string, items []*Item) error {
 	var buffer bytes.Buffer
 	buffer.WriteString(header)
-	for _, item := range items {
+	defer buffer.Reset()
+	for _, item := range (items) {
 		_, err := buffer.WriteString(item.String())
 		if err != nil {
 			return err
@@ -84,6 +85,7 @@ func SiteMap(f string, items []*Item) error {
 
 func SiteMapIndex(folder, indexFile, baseurl string) error {
 	var buffer bytes.Buffer
+	defer buffer.Reset()
 	buffer.WriteString(indexHeader)
 	fs, err := ioutil.ReadDir(folder)
 	if err != nil {
@@ -93,7 +95,6 @@ func SiteMapIndex(folder, indexFile, baseurl string) error {
 		if strings.HasSuffix(f.Name(), ".xml.gz") {
 			fmt.Println(f.Name())
 			s := fmt.Sprintf(indexTemplate, baseurl, f.Name(), time.Now().Format("2006-01-02T15:04:05+08:00"))
-			//fmt.Println(s)
 			buffer.WriteString(s)
 		}
 	}
