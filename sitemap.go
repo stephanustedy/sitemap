@@ -1,21 +1,23 @@
 package sitemap
 
 import (
-	"fmt"
-	"time"
 	"bytes"
+	"fmt"
 	"io/ioutil"
-	"compress/gzip"
 	"os"
 	"strings"
+	"time"
+
+	"github.com/klauspost/compress/gzip"
 )
 
 const (
 	header = `<?xml version="1.0" encoding="UTF-8"?>
 	<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
-	xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`
-	footer = ` </urlset>`
+	xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml">`
+	footer   = ` </urlset>`
 	template = `
 	 <url>
 	   <loc>%s</loc>
@@ -44,7 +46,6 @@ type Item struct {
 	LastMod    time.Time
 	Changefreq string
 	Priority   float32
-
 }
 
 func (item *Item) String() string {
@@ -68,6 +69,9 @@ func SiteMap(f string, items []*Item) error {
 		return err
 	}
 	defer fo.Close()
+	defer func() {
+		buffer.Reset()
+	}()
 	buffer.WriteString(footer)
 
 	zip := gzip.NewWriter(fo)
